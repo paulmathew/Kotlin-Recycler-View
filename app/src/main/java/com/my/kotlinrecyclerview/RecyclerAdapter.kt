@@ -1,26 +1,25 @@
 package com.my.kotlinrecyclerview
 
-import android.content.Context
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+
+import com.squareup.picasso.Picasso
 
 class RecyclerAdapter(
-    val context: Context
-) : RecyclerView.Adapter<RecyclerAdapter.MyViewHolder>()
-{
+    val clickListener: (Int) -> Unit,
+    val movieListItems: List<Movie>
 
-    var movieList : List<Movie> = listOf()
+) : RecyclerView.Adapter<RecyclerAdapter.MyViewHolder>() {
+
+    private var movieList: List<Movie> = movieListItems
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
         return MyViewHolder(view)
     }
 
@@ -30,18 +29,18 @@ class RecyclerAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
-        holder.tvMovieName.text = movieList.get(position).title
-        Glide.with(context).load(movieList.get(position).image)
-                .apply(RequestOptions().centerCrop())
-                .into(holder.image)
+        holder.tvMovieName.text = movieList[position].title
+        val imgUrl: String = movieList[position].image?.replace("http", "https").toString()
+
+        Picasso.get().load(imgUrl)
+            .fit()
+            .placeholder(R.drawable.progress_animation)
+            .into(holder.image)
+
+        holder.itemView.setOnClickListener { clickListener(position) }
     }
 
 
-
-    fun setMovieListItems(movieList: List<Movie>){
-        this.movieList = movieList
-        notifyDataSetChanged()
-    }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
