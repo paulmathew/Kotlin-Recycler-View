@@ -36,10 +36,9 @@ class RecyclerAdapter(
             .fit()
             .placeholder(R.drawable.progress_animation)
             .into(holder.image)
-
+// click listener
         holder.itemView.setOnClickListener { clickListener(position) }
     }
-
 
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

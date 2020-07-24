@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerview)
         recyclerview.layoutManager = LinearLayoutManager(this)
         recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+
+        //pull to refresh
         itemsswipetorefresh.setColorSchemeColors(Color.WHITE)
         itemsswipetorefresh.setProgressBackgroundColorSchemeColor(
             ContextCompat.getColor(
@@ -52,13 +54,19 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<List<Movie>>?, response: Response<List<Movie>>?) {
                 if (response?.body() != null) {
                     movieList = response.body()!!
-                    recyclerAdapter = RecyclerAdapter(clickListener = { itemPos ->
-                        Toast.makeText(
-                            applicationContext,
-                            movieList[itemPos].title,
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }, movieListItems = movieList)
+
+                    recyclerAdapter = RecyclerAdapter(
+                        //calling the listener method in the init section of the Adapter class
+                        clickListener = { itemPos ->
+                            Toast.makeText(
+                                applicationContext,
+                                movieList[itemPos].title,
+                                Toast.LENGTH_LONG
+                            ).show()
+                        },
+                        // click listener ends
+                        movieListItems = movieList
+                    )
                     recyclerView.adapter = recyclerAdapter
                     itemsswipetorefresh.isRefreshing = false
                 }
