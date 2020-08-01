@@ -14,14 +14,9 @@ interface ApiInterface {
     @GET("volley_array.json")
     fun getMovies(): Call<List<Movie>>
 
-    @GET("GetContractorsByOwner?")
-    fun getContractorList(@Query("customerId") customerId : String?, @Header("Authorization") authHeaderToken: String?) : Call<String>
-
 
     companion object {
-
-        //https://test-ai-joc-api.gordiancloud.com/v1.0/JobOrders/GetContractorsByOwner?customerId=243821
-        var BASE_URL = "https://test-ai-joc-api.gordiancloud.com/v1.0/JobOrders/"
+        var BASE_URL = "https://velmm.com/apis/"
         val client = OkHttpClient().newBuilder()
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level =
